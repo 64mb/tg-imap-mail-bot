@@ -48,13 +48,23 @@ class mail:
                     body_temp = part.get_payload(decode=True).decode('utf-8')
                     body += body_temp+'\n'
                 elif body == '' and part.get_content_type() == "text/html":
-                    body_temp = md(part.get_payload(
-                        decode=True).decode('utf-8'), strip=['tr', 'td', 'script', 'style'])
+                    body_temp = part.get_payload(
+                        decode=True).decode('utf-8')
+                    body_temp = re.sub(
+                        '<style [\s\S]+?</style>', '', body_temp)
+                    body_temp = md(body_temp, strip=[
+                                   'tr', 'td', 'script', 'style'])
                     body += body_temp+'\n'
                 else:
                     continue
 
-            body = re.sub('\n+', '\n', body).strip()
+            body = re.sub('[\xa0\u2003\u200c]', ' ', body)
+            body = re.sub(' +', ' ', body)
+            body = re.sub('\n +', '\n', body)
+            body = re.sub('\n+', '\n', body)
+            body = re.sub('\)([А-я])', ') $1', body)
+            body = re.sub('\)\*\*', ')\ns**', body)
+            body = body.strip()
 
             messages.append({
                 'date': date,
