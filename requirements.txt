@@ -1,0 +1,3 @@
+python-telegram-bot==13.0
+boto3==1.16.23
+markdownify==0.11.6
