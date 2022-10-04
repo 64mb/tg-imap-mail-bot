@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 
 ZIP_FUNCTION_FILE="./.deploy.zip"
 
