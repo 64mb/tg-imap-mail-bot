@@ -59,9 +59,11 @@ class mail:
                     continue
 
             body = re.sub('[\xa0\u2003\u200c]', ' ', body)
+            body = re.sub('\r\n', '\n', body)
+            body = re.sub('\r', '\n', body)
             body = re.sub(' +', ' ', body)
             body = re.sub('\n +', '\n', body)
-            body = re.sub('\n+', '\n', body)
+            body = re.sub('\n{2,}', '\n\n', body)
             body = re.sub('\)([А-я])', ') $1', body)
             body = re.sub('\)\*\*', ')\ns**', body)
             body = body.strip()
