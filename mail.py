@@ -51,21 +51,27 @@ class mail:
                     body_temp = part.get_payload(
                         decode=True).decode('utf-8')
                     body_temp = re.sub(
-                        '<style [\s\S]+?</style>', '', body_temp)
+                        r'<style[\s\S]*?</style>', '', body_temp)
+                    body_temp = re.sub(
+                        r'<br>', '\n', body_temp)
+                    body_temp = re.sub(
+                        r'</title>', '</title>\n', body_temp)
+                    body_temp = re.sub(
+                        r'</td>', ' </td>', body_temp)
                     body_temp = md(body_temp, strip=[
                                    'tr', 'td', 'script', 'style'])
                     body += body_temp+'\n'
                 else:
                     continue
 
-            body = re.sub('[\xa0\u2003\u200c]', ' ', body)
-            body = re.sub('\r\n', '\n', body)
-            body = re.sub('\r', '\n', body)
-            body = re.sub(' +', ' ', body)
-            body = re.sub('\n +', '\n', body)
-            body = re.sub('\n{2,}', '\n\n', body)
-            body = re.sub('\)([А-я])', ') $1', body)
-            body = re.sub('\)\*\*', ')\ns**', body)
+            body = re.sub(r'[\xa0\u2003\u200c]', ' ', body)
+            body = re.sub(r'\r\n', '\n', body)
+            body = re.sub(r'\r', '\n', body)
+            body = re.sub(r' +', ' ', body)
+            body = re.sub(r'\n +', '\n', body)
+            body = re.sub(r'\n{2,}', '\n\n', body)
+            body = re.sub(r'\)([А-я])', ') $1', body)
+            body = re.sub(r'\)\*\*', ')\ns**', body)
             body = body.strip()
 
             messages.append({
